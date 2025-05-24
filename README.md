@@ -106,6 +106,6 @@ flowchart TD
 
 ```
 
-## Prospective Design:
+## Block Design:
 
 ![Design](architecture.drawio.png)
