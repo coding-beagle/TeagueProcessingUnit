@@ -69,7 +69,7 @@ This means:
 | ...     | Reserved                           |
 | 1111111 | Reserved                           |
 
-CPU Instruction Flow
+## CPU Instruction Flow
 
 ```mermaid
 flowchart TD
