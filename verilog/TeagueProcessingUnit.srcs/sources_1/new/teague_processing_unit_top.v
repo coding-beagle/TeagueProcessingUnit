@@ -22,7 +22,9 @@
 
 module teague_processing_unit_top(
         input wire clk,
-        output wire [15:0] debug
+        output wire [15:0] debug,
+        output wire [15:0] program,
+        output wire [15:0] alu_reg
     );
     
     // ----- instruction opcodes -----
@@ -36,13 +38,17 @@ module teague_processing_unit_top(
               SUBBNZ = 4'b0110;
     
     reg [15:0] instruction_memory [0:511];
-
     reg [15:0] current_instruction;
 
     reg [15:0] accumulator;
+    
+    assign alu_reg = accumulator;
+    
     reg [15:0] program_counter;
     reg [15:0] bank_select;
     reg [15:0] cpu_flags;
+    
+    assign program = instruction_memory[program_counter];
     
     wire [1:0] bank_sel;
     assign bank_sel = bank_select[1:0]; // truncate because we don't plan on using that many banks yet
@@ -107,8 +113,14 @@ module teague_processing_unit_top(
     );
 
     // ----- Load program file -----
-    initial begin
+    initial begin : initial_block
+        integer i_val;
         $readmemh("program.hex", instruction_memory);
+        $display("Instruction memory contents");
+        for (i_val = 0; i_val < 512; i_val = i_val + 1) begin
+            if(i_val < 5)
+                $display("instruction_memory[%0d] = %h", i_val, instruction_memory[i_val]);
+        end
     end
     
     // ----- Main Clock Logic -----

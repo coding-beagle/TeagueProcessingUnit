@@ -23,4 +23,23 @@
 module teague_processing_unit_top_tb(
 
     );
+    
+    reg clk;
+    wire [15:0] debug;
+    wire [15:0] program;
+    wire [15:0] alu;
+    
+    teague_processing_unit_top DUT(
+        .clk(clk),
+        .debug(debug),
+        .program(program),
+        .alu_reg(alu)
+    );
+    
+    always # 10 clk <= ~clk;
+    
+    initial begin
+        clk <= 0;
+        # 500 $finish;
+    end
 endmodule
