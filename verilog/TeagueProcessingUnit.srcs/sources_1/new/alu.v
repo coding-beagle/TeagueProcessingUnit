@@ -23,7 +23,7 @@
 module alu(
         input wire [5:0] operation,
         input wire [15:0] incoming_data,
-        input wire [15:0] accumulator_in,
+        input wire signed [15:0] accumulator_in,
         output wire [15:0] result,
         output wire overflow,
         output wire carry
@@ -39,7 +39,7 @@ module alu(
                 XOR = 7;
     
     reg [16:0] working_reg;
-    reg [15:0] result_reg;
+    reg signed [15:0] result_reg;
     reg overflow_reg;
     reg carry_reg;
     
@@ -62,12 +62,12 @@ module alu(
                 carry_reg = working_reg[16];
                 overflow_reg = ((accumulator_in[15] ^ incoming_data[15])) & (result_reg[15] ^ accumulator_in[15]);
             end
-            BSL: working_reg = accumulator_in << 1;
-            ARS: working_reg = accumulator_in >>> 1;
-            LRS: working_reg = accumulator_in >> 1;
-            OR: working_reg  = working_reg | incoming_data;
-            AND: working_reg = working_reg & incoming_data;
-            XOR: working_reg = working_reg ^ incoming_data;
+            BSL: result_reg = accumulator_in << 1;
+            ARS: result_reg = accumulator_in >>> 1;
+            LRS: result_reg = accumulator_in >> 1;
+            OR:  result_reg = accumulator_in | incoming_data;
+            AND: result_reg = accumulator_in & incoming_data;
+            XOR: result_reg = accumulator_in ^ incoming_data;
         endcase
     end
 

@@ -11,13 +11,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="5,995 ps"></ZoomStartTime>
-      <ZoomEndTime time="6,001 ps"></ZoomEndTime>
-      <Cursor1Time time="5,998 ps"></Cursor1Time>
+      <ZoomStartTime time="10.150 ns"></ZoomStartTime>
+      <ZoomEndTime time="15.971 ns"></ZoomEndTime>
+      <Cursor1Time time="12.570 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="368"></NameColumnWidth>
-      <ValueColumnWidth column_width="85"></ValueColumnWidth>
+      <ValueColumnWidth column_width="81"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="6" />
    <wvobject fp_name="/alu_tb/operation" type="array">
