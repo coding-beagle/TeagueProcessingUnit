@@ -165,6 +165,8 @@ module teague_processing_unit_top(
                 end
 
             endcase
+
+            program_counter <= program_counter + 1;
         end
     end
 
