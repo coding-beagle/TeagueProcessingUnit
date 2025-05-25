@@ -38,12 +38,12 @@ module alu(
                 AND = 6, 
                 XOR = 7;
     
-    reg [16:0] working_reg ;
+    reg [16:0] working_reg;
     reg [15:0] result_reg;
     reg overflow_reg;
     reg carry_reg;
     
-    always @* begin
+    always @(operation, incoming_data, accumulator_in) begin
         result_reg = 0;
         overflow_reg = 0;
         carry_reg = 0;
@@ -51,9 +51,9 @@ module alu(
 
         case (operation)
             ADD: begin
-                working_reg <= accumulator_in + incoming_data;
-                result_reg <= working_reg[15:0];
-                carry_reg <= working_reg[16]; 
+                working_reg = accumulator_in + incoming_data;
+                result_reg = working_reg[15:0];
+                carry_reg = working_reg[16]; 
                 overflow_reg = (~(accumulator_in[15] ^ incoming_data[15])) & (result_reg[15] ^ accumulator_in[15]);
               end
             SUB: begin
@@ -62,12 +62,12 @@ module alu(
                 carry_reg = working_reg[16];
                 overflow_reg = ((accumulator_in[15] ^ incoming_data[15])) & (result_reg[15] ^ accumulator_in[15]);
             end
-            BSL: working_reg <= accumulator_in << 1;
-            ARS: working_reg <= accumulator_in >>> 1;
-            LRS: working_reg <= accumulator_in >> 1;
-            OR: working_reg <= working_reg | incoming_data;
-            AND: working_reg <= working_reg & incoming_data;
-            XOR: working_reg <= working_reg ^ incoming_data;
+            BSL: working_reg = accumulator_in << 1;
+            ARS: working_reg = accumulator_in >>> 1;
+            LRS: working_reg = accumulator_in >> 1;
+            OR: working_reg  = working_reg | incoming_data;
+            AND: working_reg = working_reg & incoming_data;
+            XOR: working_reg = working_reg ^ incoming_data;
         endcase
     end
 
