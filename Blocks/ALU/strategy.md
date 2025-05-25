@@ -12,9 +12,11 @@ Inputs:
 
 Outputs:
 
-| Port Name       | Width  | Purpose                            |
-| --------------- | ------ | ---------------------------------- |
-| Accumulator val | [15:0] | Value to write back to accumulator |
+| Port Name | Width  | Purpose                            |
+| --------- | ------ | ---------------------------------- |
+| Result    | [15:0] | Value to write back to accumulator |
+| Overflow  | 1      | Overflow flag                      |
+| Carry     | 1      | Carry flag                         |
 
 ## ALU State Machine (as described in README.md)
 
@@ -27,7 +29,7 @@ Outputs:
 | 000100  | Accumulator logical right shift    |
 | 000101  | Logical OR reg b with accumulator  |
 | 000110  | Logical AND reg b with accumulator |
-| 001000  | Reserved                           |
+| 001000  | Logical XOR reg b with accumulator |
 | 001001  | Reserved                           |
 | 001010  | Reserved                           |
 | ...     | Reserved                           |
