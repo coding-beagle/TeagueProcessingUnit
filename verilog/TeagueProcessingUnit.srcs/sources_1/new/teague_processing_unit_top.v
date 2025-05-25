@@ -138,16 +138,20 @@ module teague_processing_unit_top(
                         0: accumulator <= cp_val_next;
                         1: program_counter <= cp_val_next;
                         2: bank_select <= cp_val_next;
+                        default: program_counter <= program_counter + 1;
                     endcase 
+
                 end
 
                 IMM: begin
                     accumulator <= current_instruction[11:0];
+                    program_counter <= program_counter + 1;
                 end
 
                 ALU: begin
                     accumulator <= alu_result;
                     cpu_flags <= {14'b00000000000000, carry_flag, overflow_flag };
+                    program_counter <= program_counter + 1;
                 end
 
                 JMP: begin : jump_block
@@ -159,17 +163,22 @@ module teague_processing_unit_top(
                 INV: begin
                     cp_val_reg <= ~(current_writeable);
                     setval <= 1;
+                    program_counter <= program_counter + 1;
                 end
 
                 SUBBNZ: begin
                     if((current_readable - current_writeable) != 0) begin
                         program_counter <= current_readable;
-                    end
+                    end else 
+                        program_counter <= program_counter + 1;
+                end
+
+                default: begin
+                    program_counter <= program_counter + 1;
                 end
 
             endcase
-
-            program_counter <= program_counter + 1;
+            
         end
     end
 
