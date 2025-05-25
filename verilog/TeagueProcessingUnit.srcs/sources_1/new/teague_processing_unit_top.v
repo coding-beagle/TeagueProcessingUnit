@@ -22,7 +22,7 @@
 
 module teague_processing_unit_top(
         input wire clk,
-        output [15:0] wire debug
+        output wire [15:0] debug
     );
     
     // ----- instruction opcodes -----
@@ -105,6 +105,11 @@ module teague_processing_unit_top(
         .writeable_out(current_writeable),
         .reg_1(debug)
     );
+
+    // ----- Load program file -----
+    initial begin
+        $readmemh("program.hex", instruction_memory);
+    end
     
     // ----- Main Clock Logic -----
 

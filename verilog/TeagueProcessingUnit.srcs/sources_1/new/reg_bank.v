@@ -29,8 +29,8 @@ module reg_bank #(parameter bank_address = 2'b01)(
         input wire [15:0] value,
         input wire setval,
         output wire [15:0] read_only_out,
-        output wire [15:0] writeable_out
-        output wire [15:0] reg_1;
+        output wire [15:0] writeable_out,
+        output wire [15:0] reg_1
     );
 
     reg [15:0] bank [0:59];
