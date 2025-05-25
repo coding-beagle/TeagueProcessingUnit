@@ -124,6 +124,8 @@ module teague_processing_unit_top(
     end
     
     // ----- Main Clock Logic -----
+    // Somehow I introduced some fetch-execute pipelining
+    // Lmao
 
     always @ (posedge clk) begin
         if(global_reset) begin
