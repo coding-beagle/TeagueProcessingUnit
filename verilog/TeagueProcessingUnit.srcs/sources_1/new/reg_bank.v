@@ -23,7 +23,7 @@
 module reg_bank #(parameter bank_address = 2'b01)(
         input wire clk,
         input wire rst,
-        input wire bank_sel_addr,
+        input wire [1:0] bank_sel_addr,
         input wire [5:0] addr_a,
         input wire [5:0] addr_b,
         input wire [15:0] value,
