@@ -3,3 +3,5 @@ verilog/TeagueProcessingUnit.hw
 verilog/TeagueProcessingUnit.cache
 verilog/TeagueProcessingUnit.ip_user_files
 verilog/TeagueProcessingUnit.sim
+
+*.venv/*
