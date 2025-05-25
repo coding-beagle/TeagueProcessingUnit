@@ -86,7 +86,10 @@ module teague_processing_unit_top(
 
     // ----- Register Bank Logic -----
 
-    reg [15:0] cp_val;
+    wire [15:0] cp_val;
+    reg [15:0] cp_val_reg;
+
+    assign cp_val = cp_val_reg;
     reg setval;
 
     reg_bank #(.bank_address(0)) bank0 (
@@ -111,7 +114,7 @@ module teague_processing_unit_top(
             cpu_flags <= 0;
             current_instruction <= 0;
             setval <= 0;
-            cp_val <= 0;
+            cp_val_reg <= 0;
         end else begin
             current_instruction <= instruction_memory[program_counter];
             setval <= 0;
@@ -129,7 +132,7 @@ module teague_processing_unit_top(
                         default: cp_val_next = current_readable;
                     endcase 
                     setval <= 1;
-                    cp_val <= cp_val_next;
+                    cp_val_reg <= cp_val_next;
                     // guard against writing to cpu_flags
                     case (address_b)
                         0: accumulator <= cp_val_next;
@@ -154,7 +157,7 @@ module teague_processing_unit_top(
                 end
 
                 INV: begin
-                    cp_val <= ~(current_writeable);
+                    cp_val_reg <= ~(current_writeable);
                     setval <= 1;
                 end
 
