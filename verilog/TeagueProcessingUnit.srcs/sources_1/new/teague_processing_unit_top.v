@@ -21,7 +21,8 @@
 
 
 module teague_processing_unit_top(
-        input wire clk
+        input wire clk,
+        output [15:0] wire debug
     );
     
     // ----- instruction opcodes -----
@@ -101,7 +102,8 @@ module teague_processing_unit_top(
         .value(cp_val),
         .setval(setval),
         .read_only_out(current_readable),
-        .writeable_out(current_writeable)
+        .writeable_out(current_writeable),
+        .reg_1(debug)
     );
     
     // ----- Main Clock Logic -----
