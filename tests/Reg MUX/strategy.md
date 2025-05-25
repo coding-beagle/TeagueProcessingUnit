@@ -9,6 +9,8 @@ Inputs:
 | Addr B    | [5:0]  | Get the value of the writable output                              |
 | Value     | [15:0] | Value to set the writable if SetVal is high                       |
 | SetVal    | 1      | Set the value of Addr B to Value when this is high                |
+| clk       | 1      | Global clock signal                                               |
+| rst       | 1      | Global reset, initialise all registers to 0                       |
 
 Outputs:
 
