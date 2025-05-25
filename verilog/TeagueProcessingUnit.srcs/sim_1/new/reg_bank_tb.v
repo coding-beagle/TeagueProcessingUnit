@@ -72,8 +72,8 @@ module reg_bank_tb(
         clk <= 0;
         rst <= 1;
         bank_sel <= 0;
-        addr_a <= 0;
-        addr_b <= 0;
+        addr_a <= 4;
+        addr_b <= 32;
         # 30 rst <= 0;
         
 
@@ -81,9 +81,41 @@ module reg_bank_tb(
         // bank sel is 1, DUT 1 should be active, DUT 2 should show z's
         if (read_val_bank_1 != 0) $fatal(1, "Bank 1 did not reset!");
         if (read_val_bank_2 != 16'bzzzzzzzzzzzzzzzz) $fatal(1, "Bank 2 is active when bank sel is 0!");
+        
+        value <= 10;
+        setval <= 1;
+        # 10
+        
+        setval <= 0;
+        if(writeable_val_bank_1 != 10) $fatal(1, "Value in bank 1 did not get set!");
+        
+        # 10
+        
+        addr_a <= 32;
+        # 1
+        if(read_val_bank_1 != 10) $fatal(1, "Read value in bank 1 did not change asynchronously!");
+        
+        bank_sel <= 1;
+        # 9
+        
+        if (read_val_bank_1 != 16'bzzzzzzzzzzzzzzzz) $fatal(1, "Bank 1 is active when bank sel is 1!");
+        if (read_val_bank_2 != 0) $fatal(1, "Bank 2 did not reset!");
 
+        setval <= 1;
+        addr_b <= 11;
+        value <= 69;
 
-        $display("Simulation completed properly!");
+        #10
+        setval <= 0;
+        if(writeable_val_bank_2 != 69) $fatal(1, "Value in bank 2 did not get set!");
+
+        #10
+        addr_a <= 11;
+        # 1
+        if(read_val_bank_1 != 10) $fatal(1, "Read value in bank 2 did not change asynchronously!");
+        
+        
+        $display("Simulation completed with no errors!");
         $finish;
     end
 

@@ -34,18 +34,19 @@ module reg_bank #(parameter bank_address = 2'b01)(
 
     reg [15:0] bank [0:59];
 
-    assign read_only_out = ( bank_sel_addr == bank_address || addr_a > 3) ? bank[addr_a - 4] : 16'bzzzzzzzzzzzzzzzz;
-    assign writeable_out =  ( bank_sel_addr == bank_address || addr_b > 3) ? bank[addr_b - 4] : 16'bzzzzzzzzzzzzzzzz;
+    assign read_only_out = ( bank_sel_addr == bank_address && addr_a > 3) ? bank[addr_a - 4] : 16'bzzzzzzzzzzzzzzzz;
+    assign writeable_out =  ( bank_sel_addr == bank_address && addr_b > 3) ? bank[addr_b - 4] : 16'bzzzzzzzzzzzzzzzz;
 
-    always @ (posedge clk) begin 
+    always @ (posedge clk) begin
         if(rst) begin : reset
             integer i;
             for (i = 0; i < 60; i = i + 1) begin
                 bank[i] <= 0;
             end
-        end 
-        if(setval == 1) begin
-            bank[addr_b] <= value;
+        end else begin
+            if(setval == 1 && bank_sel_addr == bank_address) begin
+                bank[addr_b - 4] <= value;
+            end 
         end
     end
 
