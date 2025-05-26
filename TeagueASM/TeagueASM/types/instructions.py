@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Union, Type
+from typing import Union
 
 
 @dataclass
@@ -30,12 +30,12 @@ class Copy(Instruction):
     required_arguments: int = 2
 
     def serialise(self) -> str:
-        args_joined = (self.argument[0] << 6) + self.argument[1]
+        args_joined = (self.argument[0] << 6) + self.argument[1]  # type: ignore -> we make sure that argument is of correct type before instantiating the class :)
         return f"{self.opcode:01X}{args_joined:03X}"
 
     def validate_args(self) -> bool:
         return (
-            self.argument[0] < 64 and self.argument[1] < 64 and len(self.argument) == 2
+            self.argument[0] < 64 and self.argument[1] < 64 and len(self.argument) == 2  # type: ignore -> we make sure that argument is of correct type before instantiating the class :)
         )
 
 
@@ -48,7 +48,7 @@ class Immediate(Instruction):
         return f"{self.opcode:01X}{self.argument:03X}"
 
     def validate_args(self) -> bool:
-        return self.argument < 4097 and isinstance(self.argument, int)
+        return self.argument < 4097 and isinstance(self.argument, int)  # type: ignore -> we make sure that argument is of correct type before instantiating the class :)
 
 
 # TODO
@@ -77,11 +77,11 @@ class Invert(Instruction):
     required_arguments: int = 1
 
     def serialise(self) -> str:
-        arg_to_12_bit = 0b000000 << 6 + self.argument
+        arg_to_12_bit = (0b000000 << 6) + self.argument  # type: ignore -> we make sure that argument is of correct type before instantiating the class :)
         return f"{self.opcode:01X}{arg_to_12_bit:03X}"
 
     def validate_args(self) -> bool:
-        return self.argument < 64 and isinstance(self.argument, int)
+        return self.argument < 64 and isinstance(self.argument, int)  # type: ignore -> we make sure that argument is of correct type before instantiating the class :)
 
 
 @dataclass
@@ -90,12 +90,12 @@ class SubBranchNotZero(Instruction):
     required_arguments: int = 2
 
     def serialise(self) -> str:
-        args_joined = self.argument[0] << 6 + self.argument[1]
+        args_joined = (self.argument[0] << 6) + self.argument[1]  # type: ignore -> we make sure that argument is of correct type before instantiating the class :)
         return f"{self.opcode:01X}{args_joined:03X}"
 
     def validate_args(self) -> bool:
         return (
-            self.argument[0] < 64 and self.argument[1] < 64 and len(self.argument) == 2
+            self.argument[0] < 64 and self.argument[1] < 64 and len(self.argument) == 2  # type: ignore -> we make sure that argument is of correct type before instantiating the class :)
         )
 
 

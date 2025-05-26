@@ -14,8 +14,8 @@ The current instructions in TeagueASM are:
 | CP     | 0001   | A = 11:6, B = 5:0 | Sets the value in reg B to the value in reg A                                   |
 | IMM    | 0010   | A = 11:0          | Sets accumulator to a                                                           |
 | ALU    | 0011   | A = 11:6, B = 5:0 | Triggers an ALU command A with the value in reg B                               |
-| INV    | 0100   | A = 5:0           | Invert all of the bits in Reg A                                                 |
-| JMP    | 0101   | A = signed 11:0   | Sets program counter to program counter + A                                     |
+| JMP    | 0100   | A = signed 11:0   | Sets program counter to program counter + A                                     |
+| INV    | 0101   | A = 5:0           | Invert all of the bits in Reg A                                                 |
 | SUBBNZ | 0110   | A = 11:6, B = 5:0 | Subtract A - B, set PC to value in A if result != 0, DOES NOT MUTATE REGISTERS! |
 
 ALU State Machine names:

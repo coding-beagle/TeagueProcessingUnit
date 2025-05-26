@@ -1,21 +1,21 @@
 import pytest
-from TeagueASM.types import Immediate, string_to_instruction, Instruction
+from TeagueASM.types import Invert, string_to_instruction, Instruction
 from typing import Optional
 
 testdata = [
-    ("IMM 1", Immediate(argument=1), "2001", True, None),
-    ("IMM 2235", Immediate(argument=2235), "28BB", True, None),
+    ("INV 1", Invert(argument=1), "5001", True, None),
+    ("INV 63", Invert(argument=63), "503F", True, None),
     (
-        "IMM 125091251296126",
-        Immediate(argument=125091251296126),
+        "INV 125091251296126",
+        Invert(argument=125091251296126),
         "Should fail",
         False,
         None,
     ),
-    ("IMM 12 153", Immediate(argument=[12, 153]), "Should fail", False, ValueError),
+    ("INV 12 153", Invert(argument=[12, 153]), "Should fail", False, ValueError),
     (
-        "IMM asdasdsafasgas",
-        Immediate(argument=[12, 153]),
+        "INV asdasdsafasgas",
+        Invert(argument=[12, 153]),
         "Should fail",
         False,
         ValueError,
@@ -35,7 +35,7 @@ testdata = [
 )
 def test_parsing(
     test_string: str,
-    expected_object: Immediate,
+    expected_object: Invert,
     expected_serialisation: str,
     will_succeed: bool,
     exception: Optional[Exception],
