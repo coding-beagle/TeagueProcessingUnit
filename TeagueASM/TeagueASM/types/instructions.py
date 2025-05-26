@@ -6,6 +6,7 @@ from typing import Union, Type
 class Instruction:
     opcode: int = 0b0000
     argument: Union[int, list[int], None] = None
+    required_arguments: int = 0
 
     def serialise(self) -> str:
         return f"{self.opcode:01X}000"
@@ -17,6 +18,7 @@ class Instruction:
 @dataclass
 class Noop(Instruction):
     opcode: int = 0b1111
+    required_arguments: int = 0
 
     def serialise(self) -> str:
         return f"{self.opcode:01X}FFF"  # DC about 12 LSBs
@@ -25,7 +27,7 @@ class Noop(Instruction):
 @dataclass
 class Copy(Instruction):
     opcode: int = 0b0001
-    argument: list[int] = [0, 0]
+    required_arguments: int = 2
 
     def serialise(self) -> str:
         args_joined = self.argument[0] << 6 + self.argument[1]
@@ -40,7 +42,7 @@ class Copy(Instruction):
 @dataclass
 class Immediate(Instruction):
     opcode: int = 0b0010
-    argument: int = 0
+    required_arguments: int = 1
 
     def serialise(self) -> str:
         return f"{self.opcode:01X}{self.argument:03X}"
@@ -53,7 +55,7 @@ class Immediate(Instruction):
 @dataclass
 class AluInstruction(Instruction):
     opcode: int = 0b0011
-    argument: list[int] = [0, 0]
+    required_arguments: int = 2
 
     def serialise(self) -> str:
         return "TODO"
@@ -63,7 +65,7 @@ class AluInstruction(Instruction):
 @dataclass
 class Jump(Instruction):
     opcode: int = 0b0100
-    argument: int = 0
+    required_arguments: int = 1
 
     def serialise(self) -> str:
         return "TODO"
@@ -72,7 +74,7 @@ class Jump(Instruction):
 @dataclass
 class Invert(Instruction):
     opcode: int = 0b0101
-    argument: int = 0
+    required_arguments: int = 1
 
     def serialise(self) -> str:
         arg_to_12_bit = 0b000000 << 6 + self.argument
@@ -85,7 +87,7 @@ class Invert(Instruction):
 @dataclass
 class SubBranchNotZero(Instruction):
     opcode: int = 0b0110
-    argument: list[int] = [0, 0]
+    required_arguments: int = 2
 
     def serialise(self) -> str:
         args_joined = self.argument[0] << 6 + self.argument[1]
@@ -118,21 +120,31 @@ def string_to_instruction(input_string: str, line_num: int = 0) -> Instruction:
     Returns:
         Instruction object
     """
-    string_without_comments: str = input_string.split("//")[0]
+    string_without_comments: str = input_string
+
+    if "//" in input_string:
+        string_without_comments: str = input_string.split("//")[0]
+
     string_with_stripped_internal_whitespace: str = " ".join(
         string_without_comments.split()
     )
 
-    command_string, args = string_with_stripped_internal_whitespace.split(" ")
+    split_args: list[str] = string_with_stripped_internal_whitespace.split(" ")
 
-    if command_string not in INSTRUCTION_STRINGS:
+    command_string = split_args[0]
+    args = split_args[1:]
+
+    print(command_string)
+    print(command_string.strip().upper() not in INSTRUCTION_STRINGS)
+
+    if command_string.strip().upper() not in INSTRUCTION_STRINGS:
         raise ValueError(
             f"ERROR ON LINE {line_num}! {command_string} is not a valid command!"
         )
 
     instruction_type: type[Instruction] = INSTRUCTION_STRINGS[command_string]
 
-    if args:
+    if args and len(args) == instruction_type.required_arguments:
         if len(args) > 1:
             return instruction_type(argument=[int(i) for i in args][:2])
         else:
