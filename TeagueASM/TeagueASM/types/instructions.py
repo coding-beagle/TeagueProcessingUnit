@@ -30,7 +30,7 @@ class Copy(Instruction):
     required_arguments: int = 2
 
     def serialise(self) -> str:
-        args_joined = self.argument[0] << 6 + self.argument[1]
+        args_joined = (self.argument[0] << 6) + self.argument[1]
         return f"{self.opcode:01X}{args_joined:03X}"
 
     def validate_args(self) -> bool:
@@ -102,6 +102,7 @@ class SubBranchNotZero(Instruction):
 INSTRUCTION_STRINGS: dict[str, type[Instruction]] = {
     "NOOP": Noop,
     "CPY": Copy,
+    "CP": Copy,
     "IMM": Immediate,
     "ALU": AluInstruction,
     "JMP": Jump,

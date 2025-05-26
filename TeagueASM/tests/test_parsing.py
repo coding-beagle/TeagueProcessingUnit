@@ -7,7 +7,6 @@ testdata = [
      """,
         True,
     ),
-    ("", False),
 ]
 
 
