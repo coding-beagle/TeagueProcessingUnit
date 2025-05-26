@@ -68,14 +68,16 @@ class AluInstruction(Instruction):
         )
 
 
-# TODO
 @dataclass
 class Jump(Instruction):
     opcode: int = 0b0100
     required_arguments: int = 1
 
     def serialise(self) -> str:
-        return "TODO"
+        return f"{self.opcode:01X}{self.argument:03X}"
+
+    def validate_args(self) -> bool:
+        return self.argument < 4097 and isinstance(self.argument, int)  # type: ignore -> we make sure that argument is of correct type before instantiating the class :)
 
 
 @dataclass
