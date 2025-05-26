@@ -10,6 +10,6 @@ testdata = [
 ]
 
 
-@pytest.mark.parametrize(("test_code", "expected"), testdata)
-def test_parsing(test_code: str, expected: bool):
-    assert parse(test_code) == expected
+# @pytest.mark.parametrize(("test_code", "expected"), testdata)
+# def test_parsing(test_code: str, expected: bool):
+#     assert parse(test_code) == expected

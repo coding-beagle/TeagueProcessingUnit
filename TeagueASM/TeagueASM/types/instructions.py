@@ -135,9 +135,6 @@ def string_to_instruction(input_string: str, line_num: int = 0) -> Instruction:
     command_string = split_args[0]
     args = split_args[1:]
 
-    print(command_string)
-    print(command_string.strip().upper() not in INSTRUCTION_STRINGS)
-
     if command_string.strip().upper() not in INSTRUCTION_STRINGS:
         raise ValueError(
             f"ERROR ON LINE {line_num}! {command_string} is not a valid command!"
@@ -145,10 +142,26 @@ def string_to_instruction(input_string: str, line_num: int = 0) -> Instruction:
 
     instruction_type: type[Instruction] = INSTRUCTION_STRINGS[command_string]
 
-    if args and len(args) == instruction_type.required_arguments:
+    required_args: int = instruction_type.required_arguments
+    if len(args) != required_args:
+        raise ValueError(
+            f"ERROR ON LINE {line_num}! Too many args: {args}, expected {required_args}!"
+        )
+
+    if args:
         if len(args) > 1:
-            return instruction_type(argument=[int(i) for i in args][:2])
+            try:
+                return instruction_type(argument=[int(i) for i in args][:2])
+            except ValueError as ex:
+                raise ValueError(
+                    f"ERROR ON LINE {line_num}, args {args} are not ints!"
+                ) from ex
         else:
-            return instruction_type(argument=int(args[0]))
+            try:
+                return instruction_type(argument=int(args[0]))
+            except ValueError as ex:
+                raise ValueError(
+                    f"ERROR ON LINE {line_num}, arg {args[0]} is not an int!"
+                ) from ex
     else:
         return instruction_type()
