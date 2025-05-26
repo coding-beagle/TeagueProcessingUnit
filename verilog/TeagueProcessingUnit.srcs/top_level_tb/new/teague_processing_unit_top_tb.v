@@ -28,12 +28,20 @@ module teague_processing_unit_top_tb(
     wire [15:0] debug;
     wire [15:0] program;
     wire [15:0] alu;
+    wire [15:0] debug_reg;
+    wire [15:0] cp_val_out;
+    wire pending_setval_out;
+    wire setval_out;
     
     teague_processing_unit_top DUT(
         .clk(clk),
         .debug(debug),
         .program(program),
-        .alu_reg(alu)
+        .alu_reg(alu),
+        .debug_reg(debug_reg),
+        .cp_val_out(cp_val_out),
+        .pending_setval_out(pending_setval_out),
+        .setval_out(setval_out)
     );
     
     always # 10 clk <= ~clk;

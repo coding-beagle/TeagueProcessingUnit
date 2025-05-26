@@ -24,12 +24,16 @@ module teague_processing_unit_top(
         input wire clk,
         output wire [15:0] debug,
         output wire [15:0] program,
-        output wire [15:0] alu_reg
+        output wire [15:0] alu_reg,
+        output wire [15:0] debug_reg,
+        output wire [15:0] cp_val_out,
+        output wire pending_setval_out,
+        output wire setval_out
     );
     
     // ----- instruction opcodes -----
 
-    localparam  NOOP = 4'b0000,
+    localparam  NOOP = 4'b1111,
                   CP = 4'b0001,
                  IMM = 4'b0010,
                  ALU = 4'b0011,
@@ -38,7 +42,7 @@ module teague_processing_unit_top(
               SUBBNZ = 4'b0110;
     
     reg [15:0] instruction_memory [0:511];
-    reg [15:0] current_instruction;
+    wire [15:0] current_instruction;
 
     reg [15:0] accumulator;
     
@@ -49,6 +53,7 @@ module teague_processing_unit_top(
     reg [15:0] cpu_flags;
     
     assign program = instruction_memory[program_counter];
+    assign current_instruction = instruction_memory[program_counter];
     
     wire [1:0] bank_sel;
     assign bank_sel = bank_select[1:0]; // truncate because we don't plan on using that many banks yet
@@ -95,16 +100,26 @@ module teague_processing_unit_top(
 
     wire [15:0] cp_val;
     reg [15:0] cp_val_reg;
-
-    assign cp_val = cp_val_reg;
+    
+    reg [15:0] pending_cp_val;
+    
+    assign debug_reg = pending_cp_val;
+    assign cp_val = pending_cp_val;
     reg setval;
+    reg pending_setval;
+    reg [5:0] pending_addr_a;
+    reg [5:0] pending_addr_b;
+
+    assign setval_out = setval;
+    assign pending_setval_out = pending_setval;
+    assign cp_val_out = cp_val;
 
     reg_bank #(.bank_address(0)) bank0 (
         .clk(clk),
         .rst(global_reset),
         .bank_sel_addr(bank_sel),
-        .addr_a(address_a),
-        .addr_b(address_b),
+        .addr_a(pending_addr_a),
+        .addr_b(pending_addr_b),
         .value(cp_val),
         .setval(setval),
         .read_only_out(current_readable),
@@ -133,72 +148,90 @@ module teague_processing_unit_top(
             accumulator <= 0;
             bank_select <= 0;
             cpu_flags <= 0;
-            current_instruction <= 0;
             setval <= 0;
             cp_val_reg <= 0;
+            pending_setval <= 0;
+            pending_cp_val <= 0;
+            pending_addr_a <= address_a;
+            pending_addr_b <= address_b;
         end else begin
-            current_instruction <= instruction_memory[program_counter];
-            setval <= 0;
+            
+            if(pending_setval) begin
+                pending_cp_val <= cp_val_reg;
+                setval <= 1;
+                pending_setval <= 0;
+            end else begin
+                setval <= 0;
+                case (current_instruction[15:12])
+                    // We can read from all special registers
+                    // But only write to accumulator, program counter, and bank_sel
+                    CP: begin : copy_block
+                        reg [15:0] cp_val_next;
+                        case (address_a)
+                            0: cp_val_next = accumulator;
+                            1: cp_val_next = program_counter;
+                            2: cp_val_next = bank_select;
+                            3: cp_val_next = cpu_flags;
+                            default: cp_val_next = current_readable;
+                        endcase
+                        pending_setval <= 1;
+                        cp_val_reg <= cp_val_next;
+                        pending_addr_a <= address_a;
+                        pending_addr_b <= address_b;
+                        // guard against writing to cpu_flags
+                        case (address_b)
+                            0: begin
+                                accumulator <= cp_val_next;
+                                program_counter <= program_counter + 1;
+                            end
+                            1: program_counter <= cp_val_next;
+                            2: begin
+                                bank_select <= cp_val_next;
+                                program_counter <= program_counter + 1;
+                            end
+                            3: program_counter <= program_counter + 1;
+                            default: program_counter <= program_counter + 1;
+                        endcase 
 
-            case (current_instruction[15:12])
-                // We can read from all special registers
-                // But only write to accumulator, program counter, and bank_sel
-                CP: begin : copy_block
-                    reg [15:0] cp_val_next;
-                    case (address_a)
-                        0: cp_val_next = accumulator;
-                        1: cp_val_next = program_counter;
-                        2: cp_val_next = bank_select;
-                        3: cp_val_next = cpu_flags;
-                        default: cp_val_next = current_readable;
-                    endcase 
-                    setval <= 1;
-                    cp_val_reg <= cp_val_next;
-                    // guard against writing to cpu_flags
-                    case (address_b)
-                        0: accumulator <= cp_val_next;
-                        1: program_counter <= cp_val_next;
-                        2: bank_select <= cp_val_next;
-                        default: program_counter <= program_counter + 1;
-                    endcase 
+                    end
 
-                end
-
-                IMM: begin
-                    accumulator <= current_instruction[11:0];
-                    program_counter <= program_counter + 1;
-                end
-
-                ALU: begin
-                    accumulator <= alu_result;
-                    cpu_flags <= {14'b00000000000000, carry_flag, overflow_flag };
-                    program_counter <= program_counter + 1;
-                end
-
-                JMP: begin : jump_block
-                    reg signed [11:0] val;
-                    val = current_instruction[11:0];
-                    program_counter <= program_counter + val; 
-                end
-
-                INV: begin
-                    cp_val_reg <= ~(current_writeable);
-                    setval <= 1;
-                    program_counter <= program_counter + 1;
-                end
-
-                SUBBNZ: begin
-                    if((current_readable - current_writeable) != 0) begin
-                        program_counter <= current_readable;
-                    end else 
+                    IMM: begin
+                        accumulator <= current_instruction[11:0];
                         program_counter <= program_counter + 1;
-                end
+                    end
 
-                default: begin
-                    program_counter <= program_counter + 1;
-                end
+                    ALU: begin
+                        accumulator <= alu_result;
+                        cpu_flags <= {14'b00000000000000, carry_flag, overflow_flag };
+                        program_counter <= program_counter + 1;
+                    end
 
-            endcase
+                    JMP: begin : jump_block
+                        reg signed [11:0] val;
+                        val = current_instruction[11:0];
+                        program_counter <= program_counter + val; 
+                    end
+
+                    INV: begin
+                        cp_val_reg <= ~(current_writeable);
+                        setval <= 1;
+                        program_counter <= program_counter + 1;
+                    end
+
+                    SUBBNZ: begin
+                        if((current_readable - current_writeable) != 0) begin
+                            program_counter <= current_readable;
+                        end else 
+                            program_counter <= program_counter + 1;
+                    end
+
+                    default: begin
+                        program_counter <= program_counter + 1;
+                    end
+
+                endcase
+
+            end
             
         end
     end

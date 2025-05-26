@@ -40,7 +40,7 @@ module reg_bank #(parameter bank_address = 2'b01)(
     assign read_only_out = ( bank_sel_addr == bank_address && addr_a > 3) ? bank[addr_a - 4] : 16'bzzzzzzzzzzzzzzzz;
     assign writeable_out =  ( bank_sel_addr == bank_address && addr_b > 3) ? bank[addr_b - 4] : 16'bzzzzzzzzzzzzzzzz;
 
-    always @ (posedge clk) begin
+    always @ (negedge clk) begin
         if(rst) begin : reset
             integer i;
             for (i = 0; i < 60; i = i + 1) begin
