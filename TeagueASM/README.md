@@ -36,9 +36,9 @@ Register Names:
 | Names | Corresponding Reg | Description                              |
 | ----- | ----------------- | ---------------------------------------- |
 | ACC   | 0                 | The accumulator register                 |
-| PGC   | 1                 | The register holding the program counter |
-| BSL   | 2                 | The bank select register                 |
-| FLG   | 3                 | The CPU flag register                    |
+| PC    | 1                 | The register holding the program counter |
+| BSEL  | 2                 | The bank select register                 |
+| FLGS  | 3                 | The CPU flag register                    |
 
 ## Examples of valid TeagueASM
 

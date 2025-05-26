@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Union
+from .reg_aliases import REGISTER_ALIASES
 
 
 @dataclass
@@ -134,6 +135,10 @@ def string_to_instruction(input_string: str, line_num: int = 0) -> Instruction:
 
     command_string = split_args[0]
     args = split_args[1:]
+
+    args = [
+        REGISTER_ALIASES[i] if i in REGISTER_ALIASES else i for i in args
+    ]  # handle register aliases
 
     if command_string.strip().upper() not in INSTRUCTION_STRINGS:
         raise ValueError(

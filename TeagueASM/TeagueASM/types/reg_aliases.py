@@ -1,0 +1,1 @@
+REGISTER_ALIASES = {"ACC": 0, "PC": 1, "BSEL": 2, "FLGS": 3}
