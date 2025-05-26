@@ -1,2 +1,2 @@
-- [ ] Fix CP not working
+- [x] Fix CP not working (maybe)???
 - [ ] Figure out a way of extracting registers from reg_bank to top level.

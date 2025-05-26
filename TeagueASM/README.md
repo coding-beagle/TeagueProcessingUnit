@@ -60,7 +60,7 @@ CP ACC 04
 JMP 'Jump here'
 ALU SUB 04 // this should get skipped
 # Jump here
-IMM $(69-42) // inline macro
+IMM ${69-42} // inline macro, can be used for simple arithmetic
 ALU ADD 04
 NOOP // result in accumulator should be 69
 ```
