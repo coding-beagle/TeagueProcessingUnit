@@ -29,7 +29,7 @@ ALU State Machine names:
 | LRS   | 000100 | Accumulator logical right shift    |
 | LOR   | 000101 | Logical OR reg b with accumulator  |
 | AND   | 000110 | Logical AND reg b with accumulator |
-| XOR   | 001000 | Logical XOR reg b with accumulator |
+| XOR   | 000111 | Logical XOR reg b with accumulator |
 
 Register Names:
 

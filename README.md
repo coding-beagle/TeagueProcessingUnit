@@ -63,7 +63,7 @@ This means:
 | 000100  | Accumulator logical right shift    |
 | 000101  | Logical OR reg b with accumulator  |
 | 000110  | Logical AND reg b with accumulator |
-| 001000  | Logical XOR reg b with accumulator |
+| 000111  | Logical XOR reg b with accumulator |
 | 001001  | Reserved                           |
 | 001010  | Reserved                           |
 | ...     | Reserved                           |

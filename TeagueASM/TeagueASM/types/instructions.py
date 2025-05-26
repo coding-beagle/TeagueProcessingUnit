@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Union
 from .reg_aliases import REGISTER_ALIASES
+from .alu_state_machine import ALU_STATE_MACHINE_NAMES
 
 
 @dataclass
@@ -52,14 +53,19 @@ class Immediate(Instruction):
         return self.argument < 4097 and isinstance(self.argument, int)  # type: ignore -> we make sure that argument is of correct type before instantiating the class :)
 
 
-# TODO
 @dataclass
 class AluInstruction(Instruction):
     opcode: int = 0b0011
     required_arguments: int = 2
 
     def serialise(self) -> str:
-        return "TODO"
+        args_joined = (self.argument[0] << 6) + self.argument[1]  # type: ignore -> we make sure that argument is of correct type before instantiating the class :)
+        return f"{self.opcode:01X}{args_joined:03X}"
+
+    def validate_args(self) -> bool:
+        return (
+            self.argument[0] < 64 and self.argument[1] < 64 and len(self.argument) == 2  # type: ignore -> we make sure that argument is of correct type before instantiating the class :)
+        )
 
 
 # TODO
@@ -146,6 +152,14 @@ def string_to_instruction(input_string: str, line_num: int = 0) -> Instruction:
         )
 
     instruction_type: type[Instruction] = INSTRUCTION_STRINGS[command_string]
+
+    if instruction_type == AluInstruction:
+        if args:
+            args[0] = (
+                ALU_STATE_MACHINE_NAMES[args[0]]
+                if args[0] in ALU_STATE_MACHINE_NAMES
+                else args[0]
+            )  # only replace the first arg with ALU name
 
     required_args: int = instruction_type.required_arguments
     if len(args) != required_args:
