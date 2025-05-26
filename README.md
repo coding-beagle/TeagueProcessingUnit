@@ -35,7 +35,7 @@ This means:
 
 | Instruction      | TASM Name | Description                                                                     |
 | ---------------- | --------- | ------------------------------------------------------------------------------- |
-| 0000XXXXXXXXXXXX | NOOP      | No operation                                                                    |
+| 0000000000000000 | RES       | Reserved for expansion                                                          |
 | 0001AAAAAABBBBBB | CP        | Copy contents of reg a to reg b                                                 |
 | 0010AAAAAAAAAAAA | IMM       | Set an immediate value to the accumulator                                       |
 | 0011AAAAAABBBBBB | ALU       | Trigger the ALU state machine with command A from reg b (see below)             |
@@ -50,7 +50,7 @@ This means:
 | 1100             | RES       | Reserved for expansion                                                          |
 | 1101             | RES       | Reserved for expansion                                                          |
 | 1110             | RES       | Reserved for expansion                                                          |
-| 1111             | RES       | Reserved for expansion                                                          |
+| 1111XXXXXXXXXXXX | NOOP      | No operation                                                                    |
 
 ## ALU State Machine
 
