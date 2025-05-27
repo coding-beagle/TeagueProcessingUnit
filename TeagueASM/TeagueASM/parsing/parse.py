@@ -50,9 +50,10 @@ def initial_parse(file_text: str) -> list[str]:
     return text_string_split_ignore_comments
 
 
+# TODO, this will be very useful, but currently not needed for an MVP ASSEMBLER
 def second_parser(lines_split: list[str]) -> list[Instruction]:
     """
-    Any remaining instructions here will need their macros
+    Any remaining instructions here will need their macros resolved, and jump counts need to be resolved as well
 
     Args:
         lines_split (list[str]): _description_
@@ -60,3 +61,22 @@ def second_parser(lines_split: list[str]) -> list[Instruction]:
     Returns:
         list[Instruction]: _description_
     """
+    pass
+
+
+def convert_to_hex(object_list: list[Instruction]) -> str:
+    """
+    Takes in a list of instruction objects and serialises all of them
+
+    Args:
+        object_list (list[Instruction]): A list of instruction objects to be serialised
+
+    Returns:
+        str: A .hex-like string
+    """
+    output = ""
+    for i in object_list:
+        print(f"{i} will get serialised")
+        output += i.serialise() + "\n"
+
+    return output.strip()
