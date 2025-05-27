@@ -91,7 +91,7 @@ def convert_to_hex(object_list: list[Instruction]) -> str:
     """
     output = ""
     for i in object_list:
-        print(f"{i} will get serialised")
+        # print(f"{i} will get serialised")
         output += i.serialise() + "\n"
 
     return output.strip()

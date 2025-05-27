@@ -1,1 +1,1 @@
-from .main import cli
+from .main import cli, asm2hex
