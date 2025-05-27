@@ -45,9 +45,9 @@ Register Names:
 Simple Arithmetic:
 
 ```
-IMM 520 // set value 520 to the accumulator
+IMM 100 // set value 520 to the accumulator
 CP ACC 04 // copy value in accumulator to reg 4
-IMM 100
+IMM 520
 ALU SUB 04 // Subtract the value in reg 4 with accumulator
 NOOP // blaze it
 ```
