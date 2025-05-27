@@ -1,6 +1,7 @@
 from ..types.instructions import (
     string_to_instruction,
     Instruction,
+    Jump,
 )  # for initial line validation
 
 
@@ -33,7 +34,8 @@ def initial_parse(file_text: str) -> list[str]:
                 instruction: Instruction = string_to_instruction(
                     line, index
                 )  # use this for validation, not the cleanest but hey ho
-                if not (instruction.validate_args()):  # type: ignore
+                # don't validate jump instructions for now
+                if not (instruction.validate_args()) and not (isinstance(instruction, Jump)):  # type: ignore
                     raise ValueError(
                         f"ERROR ON LINE {index}, Call {line} violates arg rules!"
                     )
@@ -48,13 +50,13 @@ def initial_parse(file_text: str) -> list[str]:
     return text_string_split_ignore_comments
 
 
-def second_parser(file_text: str) -> list[str]:
+def second_parser(lines_split: list[str]) -> list[Instruction]:
     """
-    Resolve any jump locations and inline macros.
+    Any remaining instructions here will need their macros
 
     Args:
-        file_text (str): _description_
+        lines_split (list[str]): _description_
 
     Returns:
-        list[str]: _description_
+        list[Instruction]: _description_
     """

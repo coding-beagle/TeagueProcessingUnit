@@ -35,6 +35,15 @@ IMM 123""",
         False,
         "line 1",  # check that exception raised contains this
     ),
+    (
+        """CP 00 00
+# A tag
+IMM 1023
+JMP 'A tag'""",
+        ["CP 00 00", "#A tag#IMM 1023", "JMP 'A tag'"],
+        True,
+        "",
+    ),
 ]
 
 

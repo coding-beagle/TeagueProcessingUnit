@@ -166,7 +166,7 @@ def string_to_instruction(input_string: str, line_num: int = 0) -> Instruction:
     required_args: int = instruction_type.required_arguments
     if len(args) != required_args:
         raise ValueError(
-            f"ERROR ON LINE {line_num}! Too many args: {args}, expected {required_args}!"
+            f"ERROR ON LINE {line_num}! Wrong number of args: {args}, expected {required_args}!"
         )
 
     if args:
