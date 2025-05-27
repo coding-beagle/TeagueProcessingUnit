@@ -1,5 +1,8 @@
 import click
 from pathlib import Path
+from .parsing import initial_parse, convert_to_hex, second_parser
+from .types.instructions import Instruction
+from typing import Union
 
 
 @click.group()
@@ -22,7 +25,7 @@ def lint(filepath: str) -> None:
 @cli.command("asm2hex")  # type: ignore
 @click.argument("asmpath")
 @click.option("--outpath", "-o", default="")
-def asm2hex(asmpath: str, outpath: str) -> None:
+def asm2hex(asmpath: str, outpath: str = "") -> None:
     """
     Convert a file from TeagueASM to machine readable Hex.
 
@@ -40,6 +43,22 @@ def asm2hex(asmpath: str, outpath: str) -> None:
             ),
             err=True,
         )
+
+    assembly_text: str = ""
+    with open(asmpath_object, "r") as read_file:
+        assembly_text = read_file.read()
+
+    initial_parse_res: list[str] = initial_parse(assembly_text)
+    instruction_list: list[Instruction] = second_parser(initial_parse_res)
+    hex_out = convert_to_hex(instruction_list)
+
+    if outpath == "":
+        path_to_write: Path = Path(asmpath.split(".tgasm")[0] + "_hex.hex")
+    else:
+        path_to_write: Path = Path(outpath)
+
+    with open(path_to_write, "w") as outfile:
+        outfile.write(hex_out)
 
 
 @cli.command("hex2asm")  # type: ignore

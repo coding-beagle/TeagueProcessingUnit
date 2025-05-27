@@ -5,10 +5,6 @@ from ..types.instructions import (
 )  # for initial line validation
 
 
-def parse(file_text: str) -> bool:  # return a success or fail
-    return False
-
-
 def initial_parse(file_text: str) -> list[str]:
     """
     Initial parse will check if each line either contains
@@ -51,6 +47,7 @@ def initial_parse(file_text: str) -> list[str]:
 
 
 # TODO, this will be very useful, but currently not needed for an MVP ASSEMBLER
+# for now just convert them into instruction objects naively
 def second_parser(lines_split: list[str]) -> list[Instruction]:
     """
     Any remaining instructions here will need their macros resolved, and jump counts need to be resolved as well
@@ -61,7 +58,25 @@ def second_parser(lines_split: list[str]) -> list[Instruction]:
     Returns:
         list[Instruction]: _description_
     """
-    pass
+    output: list[Instruction] = []
+
+    for line in lines_split:
+        if len(output) == 0:
+            try:
+                output = [string_to_instruction(input_string=line)]
+            except ValueError as exc:
+                raise ValueError(
+                    f"Something went wrong when we tried to serialise {line}"
+                ) from exc
+        else:
+            try:
+                output.append(string_to_instruction(input_string=line))
+            except ValueError as exc:
+                raise ValueError(
+                    f"Something went wrong when we tried to serialise {line}"
+                ) from exc
+
+    return output
 
 
 def convert_to_hex(object_list: list[Instruction]) -> str:
