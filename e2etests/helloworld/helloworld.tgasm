@@ -1,0 +1,43 @@
+// send the various letters
+// of hello world to registers
+// then copy everything to the accumulator
+// to spell out hello world
+IMM 72
+CP ACC 04
+IMM 101
+CP ACC 05
+IMM 108
+CP ACC 06
+IMM 108
+CP ACC 07
+IMM 111
+CP ACC 08
+IMM 32
+CP ACC 09
+IMM 87
+CP ACC 10
+IMM 111
+CP ACC 11
+IMM 114
+CP ACC 12
+IMM 108
+CP ACC 13
+IMM 100
+CP ACC 14
+IMM 33
+CP ACC 15
+CP 04 ACC
+CP 05 ACC
+CP 06 ACC
+CP 07 ACC
+CP 08 ACC
+CP 09 ACC
+CP 10 ACC
+CP 11 ACC
+CP 12 ACC
+CP 13 ACC
+CP 14 ACC
+CP 15 ACC
+CP 15 ACC
+NOOP
+NOOP

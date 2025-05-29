@@ -48,6 +48,6 @@ module teague_processing_unit_top_tb(
     
     initial begin
         clk <= 0;
-        # 500 $finish;
+        # 100000 $finish;
     end
 endmodule
