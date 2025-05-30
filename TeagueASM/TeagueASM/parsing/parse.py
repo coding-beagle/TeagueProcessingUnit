@@ -110,10 +110,6 @@ def resolve_macros_and_tags(lines_split: list[str]) -> list[str]:
         else:
             output.append(line)
 
-    print(output)
-    print(tag_dict)
-    print(jump_location_dict)
-
     for line_number, tag in jump_location_dict.items():
         if tag not in tag_dict:
             raise ValueError(f"ERROR RESOLVING TAGS: Unresolved tag {tag}")

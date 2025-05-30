@@ -8,3 +8,4 @@ verilog/TeagueProcessingUnit.sim
 *.egg-info
 build
 __pycache__
+mvp_test_hex.hex
