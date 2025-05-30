@@ -74,10 +74,15 @@ class Jump(Instruction):
     required_arguments: int = 1
 
     def serialise(self) -> str:
-        return f"{self.opcode:01X}{self.argument:03X}"
+        if self.argument < 0:  # type: ignore -> we make sure that argument is of correct type before instantiating the class :)
+            # Convert to 12-bit two's complement
+            arg_12bit = (1 << 12) + self.argument  # type: ignore -> we make sure that argument is of correct type before instantiating the class :)
+        else:
+            arg_12bit = self.argument
+        return f"{self.opcode:01X}{arg_12bit:03X}"
 
     def validate_args(self) -> bool:
-        return self.argument < 4097 and isinstance(self.argument, int)  # type: ignore -> we make sure that argument is of correct type before instantiating the class :)
+        return -2048 <= self.argument <= 2047 and isinstance(self.argument, int)  # type: ignore -> we make sure that argument is of correct type before instantiating the class :)
 
 
 @dataclass

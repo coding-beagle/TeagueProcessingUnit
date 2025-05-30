@@ -4,7 +4,8 @@ from typing import Optional
 
 testdata = [
     ("JMP 1", Jump(argument=1), "4001", True, None),
-    ("JMP 2235", Jump(argument=2235), "48BB", True, None),
+    ("JMP -1", Jump(argument=-1), "4FFF", True, None),  # handle negatives
+    ("JMP 1234", Jump(argument=1234), "44D2", True, None),
     (
         "JMP 125091251296126",
         Jump(argument=125091251296126),
