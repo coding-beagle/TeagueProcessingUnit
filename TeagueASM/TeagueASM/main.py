@@ -26,6 +26,28 @@ def lint(filepath: str) -> None:
     """
     click.echo(f"Attempting to lint {filepath}")
 
+    asmpath_object: Path = Path(filepath)
+    if not (asmpath_object).exists():
+        click.echo(f"{filepath} does not exist, please enter a valid file.", err=True)
+    if asmpath_object.suffix.lower() != ".tgasm":
+        click.echo(
+            click.style(
+                f"Uh oh! It seems like {filepath} is not a valid .tgasm file!", fg="red"
+            ),
+            err=True,
+        )
+
+    assembly_text: str = ""
+    with open(asmpath_object, "r") as read_file:
+        assembly_text = read_file.read()
+
+    initial_parse_res: list[str] = initial_parse(assembly_text)
+    resolved_macros_and_tags: list[str] = resolve_macros_and_tags(initial_parse_res)
+
+    click.echo(
+        click.style(f"All Green, no errors found!", fg="green"),
+    )
+
 
 @cli.command("asm2hex")  # type: ignore
 @click.argument("asmpath")
@@ -54,8 +76,13 @@ def asm2hex(asmpath: str, outpath: str = "") -> None:
         assembly_text = read_file.read()
 
     initial_parse_res: list[str] = initial_parse(assembly_text)
-    instruction_list: list[Instruction] = list_to_instruction(initial_parse_res)
+    resolved_macros_and_tags: list[str] = resolve_macros_and_tags(initial_parse_res)
+    instruction_list: list[Instruction] = list_to_instruction(resolved_macros_and_tags)
     hex_out = convert_to_hex(instruction_list)
+
+    click.echo(
+        click.style(f"All Green, no errors found!", fg="green"),
+    )
 
     if outpath == "":
         path_to_write: Path = Path(asmpath.split(".tgasm")[0] + "_hex.hex")
