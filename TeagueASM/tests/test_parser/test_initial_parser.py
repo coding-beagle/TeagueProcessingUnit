@@ -25,7 +25,7 @@ IMM 1253
 IMM 123""",
         [],
         False,
-        "line 0",  # check that exception raised contains this
+        "line 1",  # check that exception raised contains this
     ),
     (
         """// CP asdasdas gdsgjdskgdjs
@@ -33,17 +33,17 @@ IMM 12412512521512
 IMM 123""",
         [],
         False,
-        "line 1",  # check that exception raised contains this
+        "line 2",  # check that exception raised contains this
     ),
-    #     ( # let this cook
-    #         """CP 00 00
-    # # A tag
-    # IMM 1023
-    # JMP 'A tag'""",
-    #         ["CP 00 00", "#A tag#IMM 1023", "JMP 'A tag'"],
-    #         True,
-    #         "",
-    #     ),
+    (  # let this cook
+        """CP 00 00
+    # A tag
+    IMM 1023
+    JMP 'A tag'""",
+        ["CP 00 00", "#A tag#IMM 1023", "JMP 'A tag'"],
+        True,
+        "",
+    ),
 ]
 
 

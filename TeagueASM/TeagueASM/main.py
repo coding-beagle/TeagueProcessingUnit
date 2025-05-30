@@ -1,6 +1,11 @@
 import click
 from pathlib import Path
-from .parsing import initial_parse, convert_to_hex, second_parser
+from .parsing import (
+    initial_parse,
+    convert_to_hex,
+    resolve_macros_and_tags,
+    list_to_instruction,
+)
 from .types.instructions import Instruction
 from typing import Union
 
@@ -49,7 +54,7 @@ def asm2hex(asmpath: str, outpath: str = "") -> None:
         assembly_text = read_file.read()
 
     initial_parse_res: list[str] = initial_parse(assembly_text)
-    instruction_list: list[Instruction] = second_parser(initial_parse_res)
+    instruction_list: list[Instruction] = list_to_instruction(initial_parse_res)
     hex_out = convert_to_hex(instruction_list)
 
     if outpath == "":
