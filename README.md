@@ -41,7 +41,7 @@ This means:
 | 0011AAAAAABBBBBB | ALU       | Trigger the ALU state machine with command A from reg b (see below) |
 | 0100AAAAAAAAAAAA | JMP       | Change program counter by a signed 12 bit value                     |
 | 0101XXXXXXAAAAAA | INV       | Invert all bits of reg a                                            |
-| 0110AAAAAABBBBBB | SUBBZ     | Subtract ACC - A, set PC to value in B if result == 0               |
+| 0110AAAAAABBBBBB | SUBBZ     | Subtract ACC - A, set PC to value B if result == 0                  |
 | 0111             | RES       | Reserved for expansion                                              |
 | 1000             | RES       | Reserved for expansion                                              |
 | 1001             | RES       | Reserved for expansion                                              |
@@ -88,7 +88,7 @@ flowchart TD
         B --> H["0101 = INV"]
         H --> M["reg a <= ~reg a"]
         B --> I["0110 = SUBBNZ"]
-        I --> N["if(b - a != 0) reg 1 <= a"]
+        I --> N["if(reg 0 - a == 0) reg 1 <= b"]
         P --> Q["000000 = ADD"]
         Q --> R["reg 0 <= reg 0 + reg b"]
         P --> S["000001 = SUB"]

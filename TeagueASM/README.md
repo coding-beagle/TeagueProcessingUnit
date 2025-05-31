@@ -8,15 +8,15 @@ This tool (will) provide a development environment for turning TeagueAssembly in
 
 The current instructions in TeagueASM are:
 
-| Name  | Opcode | Args              | Description                                           |
-| ----- | ------ | ----------------- | ----------------------------------------------------- |
-| NOOP  | 1111   | None              | Does nothing m8                                       |
-| CP    | 0001   | A = 11:6, B = 5:0 | Sets the value in reg B to the value in reg A         |
-| IMM   | 0010   | A = 11:0          | Sets accumulator to a                                 |
-| ALU   | 0011   | A = 11:6, B = 5:0 | Triggers an ALU command A with the value in reg B     |
-| JMP   | 0100   | A = signed 11:0   | Sets program counter to program counter + A           |
-| INV   | 0101   | A = 5:0           | Invert all of the bits in Reg A                       |
-| SUBBZ | 0110   | A = 5:0, B = 5:0  | Subtract ACC - A, set PC to value in B if result == 0 |
+| Name  | Opcode | Args              | Description                                        |
+| ----- | ------ | ----------------- | -------------------------------------------------- |
+| NOOP  | 1111   | None              | Does nothing m8                                    |
+| CP    | 0001   | A = 11:6, B = 5:0 | Sets the value in reg B to the value in reg A      |
+| IMM   | 0010   | A = 11:0          | Sets accumulator to a                              |
+| ALU   | 0011   | A = 11:6, B = 5:0 | Triggers an ALU command A with the value in reg B  |
+| JMP   | 0100   | A = signed 11:0   | Sets program counter to program counter + A        |
+| INV   | 0101   | A = 5:0           | Invert all of the bits in Reg A                    |
+| SUBBZ | 0110   | A = 5:0, B = 5:0  | Subtract ACC - A, set PC to value B if result == 0 |
 
 ALU State Machine names:
 
