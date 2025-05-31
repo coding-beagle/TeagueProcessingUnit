@@ -1,0 +1,25 @@
+{
+  // goofy ahh highlighting
+  "highlight.regexes": {
+    "(CP|CPY)": {
+      "regexFlags": "g",
+      "filterFileRegex": ".*\\.tgasm",
+      "decorations": [{ "color": "#00CCFF" }]
+    },
+    "(IMM|ALU|INV)": {
+      "regexFlags": "g",
+      "filterFileRegex": ".*\\.tgasm",
+      "decorations": [{ "color": "#4efd48" }]
+    },
+    "(JMP|SUBBZ)": {
+      "regexFlags": "g",
+      "filterFileRegex": ".*\\.tgasm",
+      "decorations": [{ "color": "#ff4242" }]
+    },
+    "(NOOP)": {
+      "regexFlags": "g",
+      "filterFileRegex": ".*\\.tgasm",
+      "decorations": [{ "color": "#d1ce00" }]
+    }
+  }
+}

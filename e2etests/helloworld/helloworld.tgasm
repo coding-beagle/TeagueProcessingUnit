@@ -37,7 +37,7 @@ CP 11 ACC
 CP 12 ACC
 CP 13 ACC
 CP 14 ACC
-CP 15 ACC
+CP 15 ACC // bug in CP that means the last cp in a cp chain won't work
 CP 15 ACC
 NOOP
 NOOP
