@@ -1,41 +1,41 @@
 import pytest
-from TeagueASM.types import SubBranchNotZero, string_to_instruction, Instruction
+from TeagueASM.types import SubBranchZero, string_to_instruction, Instruction
 from typing import Optional
 
 testdata = [
-    ("SUBBNZ 1 1", SubBranchNotZero(argument=[1, 1]), "6041", True, None),
-    ("SUBBNZ 52 1", SubBranchNotZero(argument=[52, 1]), "6D01", True, None),
+    ("SUBBZ 1 1", SubBranchZero(argument=[1, 1]), "6041", True, None),
+    ("SUBBZ 52 1", SubBranchZero(argument=[52, 1]), "6D01", True, None),
     (
-        "SUBBNZ      3      55 // with comment",
-        SubBranchNotZero(argument=[3, 55]),
+        "SUBBZ      3      55 // with comment",
+        SubBranchZero(argument=[3, 55]),
         "60F7",
         True,
         None,
     ),
     (
-        "SUBBNZ 69 737374734",
-        SubBranchNotZero(argument=[69, 737374734]),
+        "SUBBZ 69 737374734",
+        SubBranchZero(argument=[69, 737374734]),
         "Should Fail",
         False,
         None,
     ),
     (
-        "SUBBNZ 69 1 1 1 11 11 1 1 1 1 1",
-        SubBranchNotZero(argument=[69, 737374734]),
+        "SUBBZ 69 1 1 1 11 11 1 1 1 1 1",
+        SubBranchZero(argument=[69, 737374734]),
         "Should Fail",
         False,
         ValueError,
     ),
     (
-        "SUBBNZ",
-        SubBranchNotZero(argument=[69, 737374734]),
+        "SUBBZ",
+        SubBranchZero(argument=[69, 737374734]),
         "Should Fail",
         False,
         ValueError,
     ),
     (
-        "SUBBNZ saKSgjSK SKAJFKSAJKLF",
-        SubBranchNotZero(argument=[69, 737374734]),
+        "SUBBZ saKSgjSK SKAJFKSAJKLF",
+        SubBranchZero(argument=[69, 737374734]),
         "Should Fail",
         False,
         ValueError,
@@ -55,7 +55,7 @@ testdata = [
 )
 def test_parsing(
     test_string: str,
-    expected_object: SubBranchNotZero,
+    expected_object: SubBranchZero,
     expected_serialisation: str,
     will_succeed: bool,
     exception: Optional[Exception],

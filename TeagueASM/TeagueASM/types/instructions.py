@@ -99,7 +99,7 @@ class Invert(Instruction):
 
 
 @dataclass
-class SubBranchNotZero(Instruction):
+class SubBranchZero(Instruction):
     opcode: int = 0b0110
     required_arguments: int = 2
 
@@ -121,7 +121,7 @@ INSTRUCTION_STRINGS: dict[str, type[Instruction]] = {
     "ALU": AluInstruction,
     "JMP": Jump,
     "INV": Invert,
-    "SUBBNZ": SubBranchNotZero,
+    "SUBBZ": SubBranchZero,
 }
 
 

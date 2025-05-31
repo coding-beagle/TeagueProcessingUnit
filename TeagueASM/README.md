@@ -1,22 +1,22 @@
 # TeagueASM
 
-Python Module for creating Teague Assembly for the Teague Processing Unit
+Python Module for creating TeagueAssembly for the Teague Processing Unit
 
-This tool (will) provide a development environment for turning Teague Assembly into .hex files for the Teague Processing Unit.
+This tool (will) provide a development environment for turning TeagueAssembly into .hex files for the Teague Processing Unit.
 
 ## Valid TeagueASM
 
 The current instructions in TeagueASM are:
 
-| Name   | Opcode | Args              | Description                                                                     |
-| ------ | ------ | ----------------- | ------------------------------------------------------------------------------- |
-| NOOP   | 1111   | None              | Does nothing m8                                                                 |
-| CP     | 0001   | A = 11:6, B = 5:0 | Sets the value in reg B to the value in reg A                                   |
-| IMM    | 0010   | A = 11:0          | Sets accumulator to a                                                           |
-| ALU    | 0011   | A = 11:6, B = 5:0 | Triggers an ALU command A with the value in reg B                               |
-| JMP    | 0100   | A = signed 11:0   | Sets program counter to program counter + A                                     |
-| INV    | 0101   | A = 5:0           | Invert all of the bits in Reg A                                                 |
-| SUBBNZ | 0110   | A = 11:6, B = 5:0 | Subtract A - B, set PC to value in A if result != 0, DOES NOT MUTATE REGISTERS! |
+| Name  | Opcode | Args              | Description                                           |
+| ----- | ------ | ----------------- | ----------------------------------------------------- |
+| NOOP  | 1111   | None              | Does nothing m8                                       |
+| CP    | 0001   | A = 11:6, B = 5:0 | Sets the value in reg B to the value in reg A         |
+| IMM   | 0010   | A = 11:0          | Sets accumulator to a                                 |
+| ALU   | 0011   | A = 11:6, B = 5:0 | Triggers an ALU command A with the value in reg B     |
+| JMP   | 0100   | A = signed 11:0   | Sets program counter to program counter + A           |
+| INV   | 0101   | A = 5:0           | Invert all of the bits in Reg A                       |
+| SUBBZ | 0110   | A = 5:0, B = 5:0  | Subtract ACC - A, set PC to value in B if result == 0 |
 
 ALU State Machine names:
 
@@ -45,7 +45,7 @@ Register Names:
 Simple Arithmetic:
 
 ```
-IMM 100 // set accumulator register to 100 
+IMM 100 // set accumulator register to 100
 CP ACC 04 // copy value in accumulator to reg 4
 IMM 520
 ALU SUB 04 // Subtract the value in reg 4 with accumulator
