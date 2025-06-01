@@ -1,0 +1,111 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "TeagueAssemblyLanguage",
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#alu-operations"
+		},
+		{
+			"include": "#registers"
+		},
+		{
+			"include": "#tags"
+		},
+		{
+			"include": "#macros"
+		}
+	],
+	"repository": {
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.line.double-slash",
+					"match": "\/\/(.*)$"
+				}
+			]
+		},
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.control.tgasm",
+					"match": "\\b(JMP|SUBBZ|NOOP)\\b"
+				},
+				{
+					"name": "keyword.operator.tgasm",
+					"match": "\\b(ALU|INV|CP|CPY|IMM)\\b"
+				}
+			]
+		},
+		"alu-operations": {
+			"patterns": [
+				{
+					"name": "keyword.operator.arithmetic.tgasm",
+					"match": "\\b(ADD|SUB|LLS|ARS|LRS|LOR|AND|XOR)\\b"
+				}
+			]
+		},
+		"registers": {
+			"patterns": [
+				{
+					"name": "variable.language.register.tgasm",
+					"match": "\\b(ACC|PC|BSEL|FLGS)\\b"
+				}
+			]
+		},
+		"tags": {
+			"patterns": [
+				{
+					"name": "string.quoted.double.tgasm",
+					"begin": "\"",
+					"end": "\"",
+					"beginCaptures": {
+						"0": {
+							"name": "constant.character.escape.tgasm"
+						}
+					},
+					"endCaptures": {
+						"0": {
+							"name": "constant.character.escape.tgasm"
+						}
+					}
+				},
+				{
+					"name": "string.quoted.double.tgasm",
+					"begin": "#",
+					"end": "$",
+					"beginCaptures": {
+						"0": {
+							"name": "constant.character.escape.tgasm"
+						}
+					}
+				}
+			]
+		},
+		"macros": {
+			"patterns": [
+				{
+					"name": "constant.numeric",
+					"begin": "${",
+					"end": "}",
+					"beginCaptures": {
+						"0": {
+							"name": "constant.numeric"
+						}
+					},
+					"endCaptures": {
+						"0": {
+							"name": "constant.numeric"
+						}
+					}
+				}
+			]
+		}
+	},
+	"scopeName": "source.tgasm"
+}

@@ -1,0 +1,25 @@
+{
+  "name": "tgasm",
+  "displayName": "TGASM",
+  "description": "TeagueAssemblyLanguage",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "tgasm",
+      "aliases": ["TeagueAssemblyLanguage", "tgasm"],
+      "extensions": [".tgasm"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "tgasm",
+      "scopeName": "source.tgasm",
+      "path": "./syntaxes/tgasm.tmLanguage.json"
+    }]
+  }
+}

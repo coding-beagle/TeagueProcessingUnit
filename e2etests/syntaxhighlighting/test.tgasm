@@ -1,0 +1,10 @@
+// this is a comment
+# Test
+JMP 200
+SUBBZ
+NOOP "214241"
+# Test
+ALU 00 021
+INV 125
+CP ACC 00
+IMM ${23-55}
