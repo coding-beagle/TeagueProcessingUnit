@@ -8,7 +8,7 @@
   - [x] Instruction object to hex
   - [x] File parsing and IO
 
-- [ ] Add jump label handling to TeagueASM
+- [x] Add jump label handling to TeagueASM
 - [ ] Rework SUBBNZ to SUBBZ: sub b from accumulator, if accumulator is 0, branch to a.
   - [x] Renamed in docs
   - [ ] Need to rework verilog now.

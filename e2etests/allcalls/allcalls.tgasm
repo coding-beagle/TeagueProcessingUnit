@@ -1,0 +1,38 @@
+// this file is meant to serve as
+// the e2e test suite for the TPU
+// test simple arithmetic:
+# START
+IMM 1023
+CP ACC 4
+IMM 2023
+ALU SUB 4 // subtract 2023 from 1023, result should be 1000
+CP ACC 5
+IMM 204
+ALU ADD 5 // add 1000 to 204, result should be 1204.
+CP ACC 5
+// jump over some random instructions to get to a tag:
+JMP 'Skip dummy instructions'
+IMM 69
+CP ACC 4
+IMM 420
+CP ACC 5
+# Skip dummy instructions
+IMM 200
+CP ACC 6
+CP 5 ACC
+SUBBZ 6 7 // 1204 - 200, should not branch
+ALU ARS 0 // 1004 >> 1, result should be 502
+INV ACC // invert 502, result should be -503
+CP ACC 8 // -503 in reg 8
+IMM 503
+CP ACC 9
+IMM 30
+CP ACC 10 // so we branch to instruction 30 later
+IMM 0
+ALU SUB 9 // put -503 in Accumulator
+SUBBZ 8 10 // -503 - -503 = 0, should branch
+JMP 'START' // will cause an infinite loop if program doesn't branch properly
+NOOP
+IMM 69 // 69 should be left in the accumulator if program runs properly
+NOOP
+NOOP
