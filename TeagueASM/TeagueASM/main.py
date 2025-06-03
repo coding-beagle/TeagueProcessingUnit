@@ -104,4 +104,4 @@ def hex2asm(filepath: str, outpath: str) -> None:
         hexpath (str): Path of file to be converted
         outpath (str): Path of file to be written to (defaults to {hexpath}_asm.tgasm)
     """
-    click.echo(f"Attempting to convert {hexpath} to TeagueASM!")
+    click.echo(f"Attempting to convert {filepath} to TeagueASM!")

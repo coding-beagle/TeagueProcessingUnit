@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Union
 from .reg_aliases import REGISTER_ALIASES
 from .alu_state_machine import ALU_STATE_MACHINE_NAMES
+from ..utils import fetch_from_dict_by_val
 
 
 @dataclass
@@ -124,6 +125,11 @@ INSTRUCTION_STRINGS: dict[str, type[Instruction]] = {
     "SUBBZ": SubBranchZero,
 }
 
+OPCODE_STRING_DICT: dict[int, str] = {
+    INSTRUCTION_STRINGS[instruction].opcode: instruction
+    for instruction in INSTRUCTION_STRINGS
+}
+
 
 def string_to_instruction(input_string: str, line_num: int = 0) -> Instruction:
     """
@@ -191,3 +197,56 @@ def string_to_instruction(input_string: str, line_num: int = 0) -> Instruction:
                 ) from ex
     else:
         return instruction_type()
+
+
+# reverse string_to_instruction
+def hex_instruction_to_string(input_string: str, line_num: int = 0) -> str:
+    """
+    Given a hex string, work out what the opcode is and deduce it's args.
+    Swap out the args for a named value if applicable (e.g. named registers, ALU instructions).
+
+    Args:
+        input (str): A 2 byte hex string.
+
+    Returns:
+        str: The equivalent assembly call
+    """
+
+    opcode: int = int(input_string[0], 16)
+    args: int = int(input_string[1:], 16)
+
+    output = ""
+
+    if opcode not in OPCODE_STRING_DICT:
+        raise KeyError(
+            f"ERROR ON LINE {line_num}! {input_string} is not a valid instruction!"
+        )
+
+    output += OPCODE_STRING_DICT[opcode]
+
+    arg_a: int = 0
+    arg_b: int = 0
+
+    instruction_object: type[Instruction] = INSTRUCTION_STRINGS[
+        OPCODE_STRING_DICT[opcode]
+    ]
+
+    if instruction_object.required_arguments == 2:
+        arg_a = (args & int(b"111111000000")) >> 6
+        arg_b = args & int(b"000000111111")
+
+        if instruction_object == AluInstruction:
+            if arg_a in ALU_STATE_MACHINE_NAMES.values():
+                arg_a = fetch_from_dict_by_val(ALU_STATE_MACHINE_NAMES, arg_a)
+        else:
+            if arg_a in REGISTER_ALIASES.values():
+                arg_a = fetch_from_dict_by_val(REGISTER_ALIASES, arg_a)
+            if arg_b in REGISTER_ALIASES.values():
+                arg_b = fetch_from_dict_by_val(REGISTER_ALIASES, arg_b)
+
+        output += f" {arg_a} {arg_b}"
+    else:
+        if instruction_object != Noop:
+            output += f" {args}"
+
+    return output
