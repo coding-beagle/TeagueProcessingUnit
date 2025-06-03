@@ -28,7 +28,8 @@ module teague_processing_unit_top(
         output wire [15:0] debug_reg,
         output wire [15:0] cp_val_out,
         output wire pending_setval_out,
-        output wire setval_out
+        output wire setval_out,
+        output wire [5:0] pending_write_addr
     );
     
     // ----- instruction opcodes -----
@@ -39,7 +40,7 @@ module teague_processing_unit_top(
                  ALU = 4'b0011,
                  JMP = 4'b0100,
                  INV = 4'b0101,
-              SUBBNZ = 4'b0110;
+              SUBBZ = 4'b0110;
     
     reg [15:0] instruction_memory [0:511];
     wire [15:0] current_instruction;
@@ -109,6 +110,8 @@ module teague_processing_unit_top(
     reg pending_setval;
     reg [5:0] pending_addr_a;
     reg [5:0] pending_addr_b;
+    
+    assign pending_write_addr = pending_addr_b;
 
     assign setval_out = setval;
     assign pending_setval_out = pending_setval;
@@ -218,9 +221,12 @@ module teague_processing_unit_top(
                         program_counter <= program_counter + 1;
                     end
 
-                    SUBBNZ: begin
-                        if((current_readable - current_writeable) != 0) begin
-                            program_counter <= current_readable;
+                    SUBBZ: begin: subbz_block
+                        reg [15:0] subtraction_result;
+                        subtraction_result = accumulator - current_readable;
+                        accumulator <= subtraction_result;
+                        if(subtraction_result == 0) begin
+                            program_counter <= current_writeable;
                         end else 
                             program_counter <= program_counter + 1;
                     end

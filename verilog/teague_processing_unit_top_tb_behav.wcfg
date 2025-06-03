@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="959.940 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,816.941 ns"></ZoomEndTime>
-      <Cursor1Time time="1,403.940 ns"></Cursor1Time>
+      <ZoomStartTime time="339.084 ns"></ZoomStartTime>
+      <ZoomEndTime time="640.085 ns"></ZoomEndTime>
+      <Cursor1Time time="540.084 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="368"></NameColumnWidth>
-      <ValueColumnWidth column_width="65"></ValueColumnWidth>
+      <ValueColumnWidth column_width="61"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="4" />
+   <WVObjectSize size="8" />
    <wvobject fp_name="/teague_processing_unit_top_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -36,6 +36,23 @@
    <wvobject fp_name="/teague_processing_unit_top_tb/alu" type="array">
       <obj_property name="ElementShortName">alu[15:0]</obj_property>
       <obj_property name="ObjectShortName">alu[15:0]</obj_property>
-      <obj_property name="Radix">ASCIIRADIX</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/teague_processing_unit_top_tb/cp_val_out" type="array">
+      <obj_property name="ElementShortName">cp_val_out[15:0]</obj_property>
+      <obj_property name="ObjectShortName">cp_val_out[15:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/teague_processing_unit_top_tb/pending_setval_out" type="logic">
+      <obj_property name="ElementShortName">pending_setval_out</obj_property>
+      <obj_property name="ObjectShortName">pending_setval_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/teague_processing_unit_top_tb/setval_out" type="logic">
+      <obj_property name="ElementShortName">setval_out</obj_property>
+      <obj_property name="ObjectShortName">setval_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/teague_processing_unit_top_tb/pending_write_address" type="array">
+      <obj_property name="ElementShortName">pending_write_address[5:0]</obj_property>
+      <obj_property name="ObjectShortName">pending_write_address[5:0]</obj_property>
    </wvobject>
 </wave_config>
