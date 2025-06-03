@@ -199,7 +199,7 @@ def string_to_instruction(input_string: str, line_num: int = 0) -> Instruction:
         return instruction_type()
 
 
-# reverse string_to_instruction
+# Should this be here or in parsing?
 def hex_instruction_to_string(input_string: str, line_num: int = 0) -> str:
     """
     Given a hex string, work out what the opcode is and deduce it's args.

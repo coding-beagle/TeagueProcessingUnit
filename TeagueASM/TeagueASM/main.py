@@ -6,7 +6,7 @@ from .parsing import (
     resolve_macros_and_tags,
     list_to_instruction,
 )
-from .types.instructions import Instruction
+from .types.instructions import Instruction, hex_instruction_to_string
 from typing import Union
 
 
@@ -105,3 +105,34 @@ def hex2asm(filepath: str, outpath: str) -> None:
         outpath (str): Path of file to be written to (defaults to {hexpath}_asm.tgasm)
     """
     click.echo(f"Attempting to convert {filepath} to TeagueASM!")
+
+    path_object: Path = Path(filepath)
+    if not (path_object).exists():
+        click.echo(f"{filepath} does not exist, please enter a valid file.", err=True)
+    if path_object.suffix.lower() != ".hex":
+        click.echo(
+            click.style(
+                f"Uh oh! It seems like {filepath} is not a valid .hex file!", fg="red"
+            ),
+            err=True,
+        )
+
+    with open(filepath, "r") as read_file:
+        hex_text = read_file.read()
+
+    output = ""
+    for line_num, line in enumerate(hex_text.split("\n")):
+        output += hex_instruction_to_string(line, line_num)
+        output += "\n"
+
+    if outpath == "":
+        path_to_write: Path = Path(filepath.split(".hex")[0] + "_decoded.tgasm")
+    else:
+        path_to_write: Path = Path(outpath)
+
+    with open(path_to_write, "w") as outfile:
+        outfile.write(output)
+
+    click.echo(
+        click.style(f"Successfully decoded!, no errors found!", fg="green"),
+    )
