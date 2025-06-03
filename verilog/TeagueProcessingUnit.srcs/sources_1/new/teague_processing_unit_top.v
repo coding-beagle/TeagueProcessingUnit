@@ -160,8 +160,25 @@ module teague_processing_unit_top(
         end else begin
             
             if(pending_setval) begin
-                pending_cp_val <= cp_val_reg;
-                setval <= 1;
+                // guard against writing to cpu_flags
+                case (pending_addr_b)
+                    0: begin
+                        accumulator <= cp_val;
+                        program_counter <= program_counter + 1;
+                    end
+                    1: program_counter <= cp_val;
+                    2: begin
+                        bank_select <= cp_val;
+                        program_counter <= program_counter + 1;
+                    end
+                    3: program_counter <= program_counter + 1;
+                    default: begin 
+                        program_counter <= program_counter + 1;
+                        pending_cp_val <= cp_val_reg;
+                        setval <= 1;
+                    end
+                endcase 
+                
                 pending_setval <= 0;
             end else begin
                 setval <= 0;
@@ -177,24 +194,12 @@ module teague_processing_unit_top(
                             3: cp_val_next = cpu_flags;
                             default: cp_val_next = current_readable;
                         endcase
+                        
                         pending_setval <= 1;
                         cp_val_reg <= cp_val_next;
                         pending_addr_a <= address_a;
                         pending_addr_b <= address_b;
-                        // guard against writing to cpu_flags
-                        case (address_b)
-                            0: begin
-                                accumulator <= cp_val_next;
-                                program_counter <= program_counter + 1;
-                            end
-                            1: program_counter <= cp_val_next;
-                            2: begin
-                                bank_select <= cp_val_next;
-                                program_counter <= program_counter + 1;
-                            end
-                            3: program_counter <= program_counter + 1;
-                            default: program_counter <= program_counter + 1;
-                        endcase 
+                        
 
                     end
 

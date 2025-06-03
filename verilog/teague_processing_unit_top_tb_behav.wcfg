@@ -11,9 +11,9 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="339.084 ns"></ZoomStartTime>
-      <ZoomEndTime time="640.085 ns"></ZoomEndTime>
-      <Cursor1Time time="540.084 ns"></Cursor1Time>
+      <ZoomStartTime time="591.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="825.401 ns"></ZoomEndTime>
+      <Cursor1Time time="660.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="368"></NameColumnWidth>
@@ -27,6 +27,7 @@
    <wvobject fp_name="/teague_processing_unit_top_tb/debug" type="array">
       <obj_property name="ElementShortName">debug[15:0]</obj_property>
       <obj_property name="ObjectShortName">debug[15:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/teague_processing_unit_top_tb/program" type="array">
       <obj_property name="ElementShortName">program[15:0]</obj_property>

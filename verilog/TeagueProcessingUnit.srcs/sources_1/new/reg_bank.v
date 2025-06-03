@@ -35,7 +35,7 @@ module reg_bank #(parameter bank_address = 2'b01)(
 
     reg [15:0] bank [0:59];
 
-    assign reg_1 = bank[0]; // for debugging for now
+    assign reg_1 = bank[1]; // for debugging for now
 
     assign read_only_out = ( bank_sel_addr == bank_address && addr_a > 3) ? bank[addr_a - 4] : 16'bzzzzzzzzzzzzzzzz;
     assign writeable_out =  ( bank_sel_addr == bank_address && addr_b > 3) ? bank[addr_b - 4] : 16'bzzzzzzzzzzzzzzzz;
