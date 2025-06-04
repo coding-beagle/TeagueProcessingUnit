@@ -113,7 +113,7 @@ def resolve_macros_and_tags(lines_split: list[str]) -> list[str]:
     for line_number, tag in jump_location_dict.items():
         if tag not in tag_dict:
             raise ValueError(f"ERROR RESOLVING TAGS: Unresolved tag {tag}")
-        output[line_number] = f"JMP {tag_dict[tag] - line_number}"
+        output[line_number] = f"JMP {tag_dict[tag]}"
 
     return output
 

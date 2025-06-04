@@ -214,10 +214,8 @@ module teague_processing_unit_top(
                         program_counter <= program_counter + 1;
                     end
 
-                    JMP: begin : jump_block
-                        reg signed [11:0] val;
-                        val = current_instruction[11:0];
-                        program_counter <= program_counter + val; 
+                    JMP: begin
+                        program_counter <= current_instruction[11:0];
                     end
 
                     INV: begin
